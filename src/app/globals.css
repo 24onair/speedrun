@@ -51,6 +51,9 @@ body {
   color: var(--fg);
   font-family: var(--font-body);
   letter-spacing: -0.01em;
+  /* 한국어는 단어 중간에서 줄바꿈하지 않는다 (긴 영단어는 break-word 폴백) */
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 ::selection {
@@ -75,7 +78,7 @@ body {
 .display {
   font-family: var(--font-display);
   letter-spacing: 0.01em;
-  line-height: 1.05;
+  line-height: 1.12; /* 1.05는 한글 다단 줄에서 윗선이 닿음 */
   text-wrap: balance;
 }
 
