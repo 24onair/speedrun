@@ -56,6 +56,7 @@ export default async function LocaleLayout({
   }
   setRequestLocale(locale);
   const messages = await getMessages();
+  const tNav = await getTranslations({ locale, namespace: "nav" });
 
   return (
     <html lang={locale}>
@@ -63,8 +64,14 @@ export default async function LocaleLayout({
         className={`${barlow.variable} ${notoSansKr.variable} ${plexMono.variable} antialiased`}
       >
         <NextIntlClientProvider messages={messages}>
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-accent focus:px-4 focus:py-2 focus:font-bold focus:text-bg-deep"
+          >
+            {tNav("skipToContent")}
+          </a>
           <Header />
-          <main>{children}</main>
+          <main id="main">{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

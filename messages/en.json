@@ -10,7 +10,12 @@
     "livetrack": "Live Track",
     "news": "News",
     "gallery": "Gallery",
-    "cta": "Enter the Race"
+    "cta": "Enter the Race",
+    "skipToContent": "Skip to content",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu",
+    "mainNav": "Main menu",
+    "mobileNav": "Mobile menu"
   },
   "hero": {
     "eyebrow": "HAPCHEON METEOR CRATER PARAGLIDING OPEN",

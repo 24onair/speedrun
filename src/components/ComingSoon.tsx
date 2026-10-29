@@ -13,7 +13,7 @@ export default function ComingSoon({ pageKey }: { pageKey: string }) {
       </h1>
       <p className="mt-4 max-w-md text-muted">{t("body")}</p>
       <Link href="/" className="btn btn-ghost mt-8">
-        ← {t("back")}
+        <span aria-hidden>←</span> {t("back")}
       </Link>
     </section>
   );

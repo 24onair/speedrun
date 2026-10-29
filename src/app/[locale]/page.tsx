@@ -44,7 +44,7 @@ function Hero() {
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-4">
           <Link href="/register" className="btn btn-primary">
-            {t("cta")} →
+            {t("cta")} <span aria-hidden>→</span>
           </Link>
           <Link href="/about" className="btn btn-ghost">
             {t("cta2")}
@@ -153,7 +153,7 @@ function Leaderboard() {
           <p className="mt-4 max-w-xl text-muted">{t("lead")}</p>
         </div>
         <Link href="/ranking" className="btn btn-ghost text-sm">
-          {t("viewAll")} →
+          {t("viewAll")} <span aria-hidden>→</span>
         </Link>
       </div>
 
@@ -178,12 +178,13 @@ function Leaderboard() {
 
       <div className="card mt-4 overflow-x-auto">
         <table className="w-full text-sm">
+          <caption className="sr-only">{t("title")}</caption>
           <thead>
-            <tr className="hud border-b border-line text-left text-xs text-muted">
-              <th className="px-5 py-3 font-medium">{t("rank")}</th>
-              <th className="px-5 py-3 font-medium">{t("pilot")}</th>
-              <th className="hidden px-5 py-3 font-medium sm:table-cell">CLASS</th>
-              <th className="px-5 py-3 text-right font-medium">{t("time")}</th>
+            <tr className="hud border-b border-line bg-panel-2/60 text-left text-xs text-muted">
+              <th scope="col" className="px-5 py-3 font-medium">{t("rank")}</th>
+              <th scope="col" className="px-5 py-3 font-medium">{t("pilot")}</th>
+              <th scope="col" className="hidden px-5 py-3 font-medium sm:table-cell">CLASS</th>
+              <th scope="col" className="px-5 py-3 text-right font-medium">{t("time")}</th>
             </tr>
           </thead>
           <tbody>
@@ -216,7 +217,7 @@ function Season() {
           <h2 className="display text-4xl font-bold sm:text-5xl">{t("title")}</h2>
           <p className="mt-5 max-w-xl leading-relaxed text-muted">{t("body")}</p>
           <Link href="/register" className="btn btn-primary mt-8">
-            {t("cta")} →
+            {t("cta")} <span aria-hidden>→</span>
           </Link>
         </div>
         <ul className="flex flex-col justify-center gap-3">
@@ -243,7 +244,7 @@ function News() {
           <h2 className="display text-4xl font-bold sm:text-5xl">{t("title")}</h2>
         </div>
         <Link href="/news" className="btn btn-ghost text-sm">
-          {t("viewAll")} →
+          {t("viewAll")} <span aria-hidden>→</span>
         </Link>
       </div>
       <div className="mt-10 grid gap-4 md:grid-cols-3">
@@ -271,7 +272,7 @@ function CtaBand() {
         <h2 className="display text-5xl font-bold sm:text-6xl">{t("title")}</h2>
         <p className="mt-4 text-muted">{t("body")}</p>
         <Link href="/register" className="btn btn-primary mt-8 px-10 py-4 text-base">
-          {t("cta")} →
+          {t("cta")} <span aria-hidden>→</span>
         </Link>
       </div>
     </section>

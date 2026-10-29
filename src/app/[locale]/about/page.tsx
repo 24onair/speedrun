@@ -66,7 +66,7 @@ export default function AboutPage({
           ))}
         </ul>
         <Link href="/register" className="btn btn-primary mt-10">
-          {t("cta")} →
+          {t("cta")} <span aria-hidden>→</span>
         </Link>
       </section>
     </>

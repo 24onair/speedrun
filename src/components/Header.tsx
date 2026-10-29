@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Link, usePathname } from "../i18n/navigation";
 
@@ -20,6 +20,13 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const otherLocale = locale === "ko" ? "en" : "ko";
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-bg-deep/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
@@ -31,7 +38,7 @@ export default function Header() {
           SPEED<span className="text-accent"> RUN</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 lg:flex" aria-label="main">
+        <nav className="hidden items-center gap-6 lg:flex" aria-label={t("mainNav")}>
           {NAV_ITEMS.map((item) => (
             <Link
               key={item.key}
@@ -62,7 +69,8 @@ export default function Header() {
             type="button"
             className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 lg:hidden"
             aria-expanded={open}
-            aria-label="menu"
+            aria-controls="mobile-nav"
+            aria-label={open ? t("menuClose") : t("menuOpen")}
             onClick={() => setOpen((v) => !v)}
           >
             <span className={`h-0.5 w-5 bg-fg transition-transform ${open ? "translate-y-1 rotate-45" : ""}`} />
@@ -72,13 +80,16 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-line bg-bg-deep lg:hidden" aria-label="mobile">
+        <nav id="mobile-nav" className="border-t border-line bg-bg-deep lg:hidden" aria-label={t("mobileNav")}>
           <div className="mx-auto flex max-w-6xl flex-col px-4 py-2">
             {NAV_ITEMS.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
-                className="border-b border-line/50 py-3 text-sm font-medium text-fg last:border-b-0"
+                className={`border-b border-line/50 py-3 text-sm font-medium last:border-b-0 ${
+                  pathname.startsWith(item.href) ? "text-accent" : "text-fg"
+                }`}
+                aria-current={pathname.startsWith(item.href) ? "page" : undefined}
                 onClick={() => setOpen(false)}
               >
                 {t(item.key)}
