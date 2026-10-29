@@ -66,6 +66,9 @@ body {
   outline-offset: 2px;
 }
 
+/* 커스텀 컴포넌트 클래스는 components 레이어에 둔다 —
+   언레이어드로 두면 Tailwind 유틸리티(hidden, py-* 등)를 이겨버린다 */
+@layer components {
 /* section eyebrow label, e.g. "THE CIRCUIT" */
 .eyebrow {
   font-family: var(--font-mono);
@@ -150,6 +153,8 @@ body {
 .ticker-track {
   animation: ticker 36s linear infinite;
 }
+} /* @layer components */
+
 @media (prefers-reduced-motion: reduce) {
   .ticker-track { animation: none; }
 }

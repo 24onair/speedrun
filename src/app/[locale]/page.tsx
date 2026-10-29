@@ -158,7 +158,7 @@ function Leaderboard() {
           <h2 className="display text-4xl font-bold sm:text-5xl">{t("title")}</h2>
           <p className="mt-4 max-w-xl text-muted">{t("lead")}</p>
         </div>
-        <Link href="/ranking" className="btn btn-ghost !text-sm">
+        <Link href="/ranking" className="btn btn-ghost text-sm">
           {t("viewAll")} →
         </Link>
       </div>
@@ -248,7 +248,7 @@ function News() {
           <p className="eyebrow mb-3">{t("label")}</p>
           <h2 className="display text-4xl font-bold sm:text-5xl">{t("title")}</h2>
         </div>
-        <Link href="/news" className="btn btn-ghost !text-sm">
+        <Link href="/news" className="btn btn-ghost text-sm">
           {t("viewAll")} →
         </Link>
       </div>
@@ -276,7 +276,7 @@ function CtaBand() {
       <div className="mx-auto max-w-6xl px-4 py-24 text-center">
         <h2 className="display text-5xl font-bold sm:text-6xl">{t("title")}</h2>
         <p className="mt-4 text-muted">{t("body")}</p>
-        <Link href="/register" className="btn btn-primary mt-8 !px-10 !py-4 !text-base">
+        <Link href="/register" className="btn btn-primary mt-8 px-10 py-4 text-base">
           {t("cta")} →
         </Link>
       </div>

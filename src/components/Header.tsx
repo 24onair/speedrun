@@ -54,7 +54,7 @@ export default function Header() {
           >
             {otherLocale === "en" ? "EN" : "한국어"}
           </Link>
-          <Link href="/register" className="btn btn-primary hidden !py-2 !text-sm sm:inline-flex">
+          <Link href="/register" className="btn btn-primary hidden py-2 text-sm sm:inline-flex">
             {t("cta")}
           </Link>
           <button
