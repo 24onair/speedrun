@@ -1,26 +1,152 @@
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────
+   SPEED RUN design tokens — "Night Circuit"
+   dark base + racing orange, telemetry/checker motifs
+   ─────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b1119;
+  --bg-deep: #070b12;
+  --panel: #111a28;
+  --panel-2: #162132;
+  --line: #22304a;
+  --fg: #eef3fa;
+  --muted: #8da0bb;
+  --accent: #ff7a1a;
+  --accent-hi: #ffb36b;
+  --accent-soft: rgba(255, 122, 26, 0.12);
+  --sky: #5fb2ff;
+  --good: #46d08c;
+  color-scheme: dark;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-deep: var(--bg-deep);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-hi: var(--accent-hi);
+  --color-sky: var(--sky);
+  --color-good: var(--good);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* next/font injects --font-barlow / --font-noto / --font-plex-mono on <body>,
+   so font roles are plain CSS vars here, not @theme inline tokens */
+body {
+  --font-display: var(--font-barlow), var(--font-noto), sans-serif;
+  --font-body: var(--font-noto), -apple-system, "Apple SD Gothic Neo", sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: var(--accent);
+  color: #0b1119;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* section eyebrow label, e.g. "THE CIRCUIT" */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.display {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 0.8rem 1.6rem;
+  border-radius: 4px;
+  transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primary {
+  background: var(--accent);
+  color: #10131a;
+  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+}
+.btn-primary:hover {
+  background: var(--accent-hi);
+}
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--fg);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* checkered-flag strip */
+.checker {
+  height: 8px;
+  background: repeating-conic-gradient(rgba(238, 243, 250, 0.9) 0% 25%, transparent 0% 50%) 0 0/16px 16px;
+  opacity: 0.18;
+}
+
+/* telemetry readouts */
+.hud {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+
+/* waypoint ticker along the hero bottom */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track {
+  animation: ticker 36s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
 }
