@@ -220,9 +220,9 @@ function Season() {
             {t("cta")} <span aria-hidden>→</span>
           </Link>
         </div>
-        <ul className="flex flex-col justify-center gap-3">
+        <ul className="flex flex-col justify-center">
           {bullets.map((key, i) => (
-            <li key={key} className="card flex items-center gap-4 p-5">
+            <li key={key} className="flex items-center gap-4 border-b border-line/60 py-4 first:border-t">
               <span className="hud text-sm text-accent">{String(i + 1).padStart(2, "0")}</span>
               <span className="text-sm text-fg">{t(key)}</span>
             </li>
