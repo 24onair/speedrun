@@ -39,7 +39,8 @@
 body {
   --font-display: var(--font-barlow), var(--font-noto), sans-serif;
   --font-body: var(--font-noto), -apple-system, "Apple SD Gothic Neo", sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* Plex Mono엔 한글 글리프가 없어 한글은 Noto로 폴백시킨다 */
+  --font-mono: var(--font-plex-mono), var(--font-noto), ui-monospace, monospace;
 }
 
 html {
@@ -143,7 +144,7 @@ body {
 
 .tag {
   font-family: var(--font-mono);
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 0.08em;
   color: var(--accent);
   background: var(--accent-soft);
