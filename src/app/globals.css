@@ -163,4 +163,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .ticker-track { animation: none; }
+  .animate-pulse { animation: none; }
+  html { scroll-behavior: auto; }
 }

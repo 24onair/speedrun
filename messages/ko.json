@@ -19,7 +19,9 @@
     "sub": "2억 년 전, 운석이 이곳에 서킷을 만들었다. 한국 유일의 운석충돌구 — 합천 초계분지 위에서 벌어지는 순수 타임어택.",
     "cta": "참가신청",
     "cta2": "대회 알아보기",
-    "seasonBadge": "시즌 오픈 — 도전 무제한"
+    "seasonBadge": "시즌 오픈 — 도전 무제한",
+    "videoPause": "배경 영상 일시정지",
+    "videoPlay": "배경 영상 재생"
   },
   "circuit": {
     "label": "THE CIRCUIT",

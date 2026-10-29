@@ -19,7 +19,9 @@
     "sub": "Two hundred million years ago, a meteor built this circuit. A pure time attack above the Chogye Basin — Korea's only confirmed meteor impact crater.",
     "cta": "Enter the Race",
     "cta2": "About the Race",
-    "seasonBadge": "Season open — unlimited attempts"
+    "seasonBadge": "Season open — unlimited attempts",
+    "videoPause": "Pause background video",
+    "videoPlay": "Play background video"
   },
   "circuit": {
     "label": "THE CIRCUIT",

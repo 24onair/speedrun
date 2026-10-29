@@ -2,6 +2,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import { Link } from "../../i18n/navigation";
+import HeroVideo from "../../components/HeroVideo";
 import { OVERALL_TOP } from "../../lib/sample-data";
 
 export default function Home({
@@ -29,16 +30,8 @@ function Hero() {
   const t = useTranslations("hero");
   return (
     <section className="relative overflow-hidden">
-      <video
-        className="absolute inset-0 h-full w-full object-cover"
-        src="/media/hero.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        aria-hidden
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-bg-deep/70 via-bg-deep/45 to-bg" />
+      <HeroVideo />
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-deep/75 via-bg-deep/55 to-bg" />
       <div className="relative mx-auto flex min-h-[82svh] max-w-6xl flex-col justify-end px-4 pb-20 pt-28">
         <p className="eyebrow mb-5">{t("eyebrow")}</p>
         <h1 className="display text-5xl font-bold sm:text-7xl lg:text-8xl">
