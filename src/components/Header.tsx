@@ -13,8 +13,9 @@ const NAV_ITEMS = [
   { key: "gallery", href: "/gallery" },
 ] as const;
 
-export default function Header() {
+export default function Header({ authed = false }: { authed?: boolean }) {
   const t = useTranslations("nav");
+  const tAuth = useTranslations("auth");
   const locale = useLocale();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -62,6 +63,13 @@ export default function Header() {
           >
             {otherLocale === "en" ? "EN" : "한국어"}
           </Link>
+          <Link
+            href={authed ? "/mypage" : "/login"}
+            className="hidden py-2 text-sm font-medium text-muted transition-colors hover:text-accent sm:block"
+            onClick={() => setOpen(false)}
+          >
+            {authed ? tAuth("mypage") : tAuth("goLogin")}
+          </Link>
           <Link href="/register" className="btn btn-primary hidden py-2 text-sm sm:inline-flex">
             {t("cta")}
           </Link>
@@ -95,6 +103,13 @@ export default function Header() {
                 {t(item.key)}
               </Link>
             ))}
+            <Link
+              href={authed ? "/mypage" : "/login"}
+              className="border-t border-line py-3 text-sm font-medium text-muted"
+              onClick={() => setOpen(false)}
+            >
+              {authed ? tAuth("mypage") : tAuth("goLogin")}
+            </Link>
           </div>
         </nav>
       )}

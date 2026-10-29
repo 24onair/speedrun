@@ -6,6 +6,7 @@ import { getMessages, getTranslations, setRequestLocale } from "next-intl/server
 import { routing } from "../../i18n/routing";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import { createClient, isSupabaseConfigured } from "../../lib/supabase/server";
 import "../globals.css";
 
 const barlow = Barlow_Condensed({
@@ -58,6 +59,15 @@ export default async function LocaleLayout({
   const messages = await getMessages();
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
+  let authed = false;
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    authed = Boolean(user);
+  }
+
   return (
     <html lang={locale}>
       <body
@@ -70,7 +80,7 @@ export default async function LocaleLayout({
           >
             {tNav("skipToContent")}
           </a>
-          <Header />
+          <Header authed={authed} />
           <main id="main">{children}</main>
           <Footer />
         </NextIntlClientProvider>
