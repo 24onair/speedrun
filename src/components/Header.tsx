@@ -36,9 +36,10 @@ export default function Header() {
             <Link
               key={item.key}
               href={item.href}
-              className={`text-sm font-medium transition-colors hover:text-accent ${
+              className={`py-2 text-sm font-medium transition-colors hover:text-accent ${
                 pathname.startsWith(item.href) ? "text-accent" : "text-muted"
               }`}
+              aria-current={pathname.startsWith(item.href) ? "page" : undefined}
             >
               {t(item.key)}
             </Link>
@@ -49,7 +50,7 @@ export default function Header() {
           <Link
             href={pathname}
             locale={otherLocale}
-            className="hud rounded border border-line px-2.5 py-1.5 text-xs text-muted transition-colors hover:border-accent hover:text-accent"
+            className="hud inline-flex min-h-11 items-center rounded border border-line px-3 text-xs text-muted transition-colors hover:border-accent hover:text-accent"
             aria-label={otherLocale === "en" ? "Switch to English" : "한국어로 전환"}
           >
             {otherLocale === "en" ? "EN" : "한국어"}
@@ -59,7 +60,7 @@ export default function Header() {
           </Link>
           <button
             type="button"
-            className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 lg:hidden"
+            className="flex h-11 w-11 flex-col items-center justify-center gap-1.5 lg:hidden"
             aria-expanded={open}
             aria-label="menu"
             onClick={() => setOpen((v) => !v)}

@@ -19,20 +19,20 @@ export default function Footer() {
           <p className="mt-4 text-sm text-muted">{t("org")}</p>
         </div>
         <div>
-          <p className="eyebrow mb-4">{t("menu")}</p>
-          <ul className="space-y-2 text-sm text-muted">
-            <li><Link className="hover:text-accent" href="/about">{nav("about")}</Link></li>
-            <li><Link className="hover:text-accent" href="/register">{nav("register")}</Link></li>
-            <li><Link className="hover:text-accent" href="/ranking">{nav("ranking")}</Link></li>
-            <li><Link className="hover:text-accent" href="/news">{nav("news")}</Link></li>
+          <p className="eyebrow mb-3">{t("menu")}</p>
+          <ul className="text-sm text-muted">
+            <li><Link className="inline-block py-2 hover:text-accent" href="/about">{nav("about")}</Link></li>
+            <li><Link className="inline-block py-2 hover:text-accent" href="/register">{nav("register")}</Link></li>
+            <li><Link className="inline-block py-2 hover:text-accent" href="/ranking">{nav("ranking")}</Link></li>
+            <li><Link className="inline-block py-2 hover:text-accent" href="/news">{nav("news")}</Link></li>
           </ul>
         </div>
         <div>
-          <p className="eyebrow mb-4">{t("contact")}</p>
-          <ul className="space-y-2 text-sm text-muted">
+          <p className="eyebrow mb-3">{t("contact")}</p>
+          <ul className="text-sm text-muted">
             <li>
               <a
-                className="hover:text-accent"
+                className="inline-block py-2 hover:text-accent"
                 href="https://www.youtube.com/@limitedgabi"
                 target="_blank"
                 rel="noreferrer"
