@@ -145,10 +145,11 @@ function Leaderboard() {
   const t = useTranslations("leaderboard");
   const locale = useLocale();
   const [p1, p2, p3, ...rest] = OVERALL_TOP;
+  // DOM은 P1 먼저(모바일 1열·스크린리더 순서), md 이상에서만 P2-P1-P3 포디움 배치
   const podium = [
-    { entry: p2, cls: "order-1 mt-6" },
-    { entry: p1, cls: "order-2 border-t-2 border-t-accent" },
-    { entry: p3, cls: "order-3 mt-6" },
+    { entry: p1, cls: "md:order-2 border-t-2 border-t-accent" },
+    { entry: p2, cls: "md:order-1 md:mt-6" },
+    { entry: p3, cls: "md:order-3 md:mt-6" },
   ];
   return (
     <section className="mx-auto max-w-6xl px-4 py-24">
@@ -163,7 +164,7 @@ function Leaderboard() {
         </Link>
       </div>
 
-      <div className="mt-12 grid gap-3 sm:grid-cols-3">
+      <div className="mt-12 grid gap-3 md:grid-cols-3">
         {podium.map(({ entry, cls }) => (
           <div key={entry.rank} className={`card flex flex-col items-center p-6 text-center ${cls}`}>
             <p className={`display text-2xl font-bold ${entry.rank === 1 ? "text-accent" : "text-muted"}`}>
@@ -182,7 +183,7 @@ function Leaderboard() {
         ))}
       </div>
 
-      <div className="card mt-4 overflow-hidden">
+      <div className="card mt-4 overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="hud border-b border-line text-left text-xs text-muted">
