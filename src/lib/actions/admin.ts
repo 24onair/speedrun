@@ -118,6 +118,46 @@ export async function addPost(
   return { error: null, ok: true };
 }
 
+export async function updatePost(
+  _prev: PostState,
+  formData: FormData,
+): Promise<PostState> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  const id = String(formData.get("id") ?? "");
+  const category = String(formData.get("category") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const body = String(formData.get("body") ?? "").trim();
+  let titleEn = String(formData.get("titleEn") ?? "").trim();
+  let bodyEn = String(formData.get("bodyEn") ?? "").trim();
+  if (!id || !["notice", "news", "event"].includes(category) || !title || !body) {
+    return { error: "missing_fields" };
+  }
+
+  if (!titleEn && !bodyEn) {
+    const translated = await translateFieldsToEn({ title, body });
+    if (translated) {
+      titleEn = translated.title ?? "";
+      bodyEn = translated.body ?? "";
+    }
+  }
+
+  const { error } = await supabase
+    .from("posts")
+    .update({
+      category,
+      title,
+      body,
+      title_en: titleEn || null,
+      body_en: bodyEn || null,
+    })
+    .eq("id", id);
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { error: null, ok: true };
+}
+
 export async function deletePost(id: string) {
   const supabase = await requireAdmin();
   if (!supabase) return;
@@ -157,6 +197,52 @@ export async function addGalleryItem(input: {
     caption: ko || null,
     caption_en: en || null,
   });
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { error: null };
+}
+
+export async function updateGalleryItem(input: {
+  id: string;
+  caption: string;
+  captionEn: string;
+  takenOn: string;
+  videoUrl: string;
+}): Promise<{ error: string | null }> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  const patch: Record<string, unknown> = {};
+
+  const ko = input.caption.trim();
+  let en = input.captionEn.trim();
+  if (ko && !en) {
+    const translated = await translateFieldsToEn({ caption: ko });
+    en = translated?.caption ?? "";
+  }
+  patch.caption = ko || null;
+  patch.caption_en = en || null;
+  patch.taken_on = input.takenOn || null;
+
+  if (input.videoUrl.trim()) {
+    const ytId = extractYouTubeId(input.videoUrl);
+    if (!ytId) return { error: "invalid_youtube" };
+    patch.video_url = `https://www.youtube.com/watch?v=${ytId}`;
+    // 썸네일이 유튜브 자동 썸네일이었다면 새 영상 것으로 교체
+    const { data: item } = await supabase
+      .from("gallery_items")
+      .select("image_url")
+      .eq("id", input.id)
+      .single();
+    if (!item?.image_url || item.image_url.includes("i.ytimg.com")) {
+      patch.image_url = youTubeThumbnail(ytId);
+    }
+  }
+
+  const { error } = await supabase
+    .from("gallery_items")
+    .update(patch)
+    .eq("id", input.id);
   if (error) return { error: error.message };
   revalidateAll();
   return { error: null };

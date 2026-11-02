@@ -380,7 +380,12 @@
       "pending": "Pending",
       "confirmed": "Confirmed",
       "cancelled": "Cancelled"
-    }
+    },
+    "edit": "Edit",
+    "save": "Save",
+    "editCancel": "Cancel",
+    "takenOn": "Date taken",
+    "saved": "Saved."
   },
   "gallery": {
     "label": "GALLERY",

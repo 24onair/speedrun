@@ -380,7 +380,12 @@
       "pending": "입금 대기",
       "confirmed": "확정",
       "cancelled": "취소"
-    }
+    },
+    "edit": "수정",
+    "save": "저장",
+    "editCancel": "취소",
+    "takenOn": "촬영일",
+    "saved": "저장되었습니다."
   },
   "gallery": {
     "label": "GALLERY",

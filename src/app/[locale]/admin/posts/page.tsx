@@ -1,6 +1,6 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
+import PostAdminRow from "../../../../components/admin/PostAdminRow";
 import PostForm from "../../../../components/admin/PostForm";
-import { deletePost } from "../../../../lib/actions/admin";
 import { createClient } from "../../../../lib/supabase/server";
 
 export default async function AdminPostsPage({
@@ -16,7 +16,7 @@ export default async function AdminPostsPage({
 
   const { data: posts } = await supabase
     .from("posts")
-    .select("id, category, title, created_at")
+    .select("id, category, title, body, title_en, body_en, created_at")
     .order("created_at", { ascending: false })
     .limit(30);
 
@@ -28,28 +28,24 @@ export default async function AdminPostsPage({
       </div>
 
       <h2 className="display mt-12 text-2xl font-bold">{t("recent")}</h2>
-      <div className="card mt-4 overflow-x-auto">
+      <div className="card mt-4">
         {!posts?.length ? (
           <p className="p-6 text-sm text-muted">{t("none")}</p>
         ) : (
-          <table className="w-full text-sm">
-            <tbody>
-              {posts.map((post) => (
-                <tr key={post.id} className="border-b border-line/50 last:border-b-0">
-                  <td className="hud px-4 py-3 text-xs text-accent">{post.category}</td>
-                  <td className="px-4 py-3 font-medium">{post.title}</td>
-                  <td className="hud px-4 py-3 text-xs text-muted">
-                    {format.dateTime(new Date(post.created_at), { dateStyle: "medium" })}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <form action={deletePost.bind(null, post.id)}>
-                      <button className="btn btn-ghost px-3 py-1.5 text-xs">{t("delete")}</button>
-                    </form>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          posts.map((post) => (
+            <PostAdminRow
+              key={post.id}
+              post={{
+                id: post.id,
+                category: post.category as "notice" | "news" | "event",
+                title: post.title,
+                body: post.body,
+                titleEn: post.title_en ?? "",
+                bodyEn: post.body_en ?? "",
+                dateLabel: format.dateTime(new Date(post.created_at), { dateStyle: "medium" }),
+              }}
+            />
+          ))
         )}
       </div>
     </div>
