@@ -358,7 +358,29 @@
     "recentGallery": "Recent gallery",
     "noneGallery": "No photos.",
     "enAuto": "EN — auto-translated on publish if left empty",
-    "youtubeUrl": "YouTube link (adds a video, optional)"
+    "youtubeUrl": "YouTube link (adds a video, optional)",
+    "nav": {
+      "dashboard": "Dashboard",
+      "registrations": "Entries",
+      "records": "Records",
+      "posts": "Posts",
+      "gallery": "Gallery"
+    },
+    "dash": {
+      "pending": "Awaiting deposit",
+      "totalRegs": "Total entries",
+      "pilots": "Pilots",
+      "records": "Records",
+      "posts": "Posts",
+      "galleryItems": "Gallery",
+      "go": "Manage"
+    },
+    "filter": {
+      "all": "All",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    }
   },
   "gallery": {
     "label": "GALLERY",

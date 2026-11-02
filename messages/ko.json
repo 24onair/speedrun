@@ -358,7 +358,29 @@
     "recentGallery": "최근 갤러리",
     "noneGallery": "사진이 없습니다.",
     "enAuto": "EN — 비워두면 게시 시 자동 번역됩니다",
-    "youtubeUrl": "유튜브 링크 (영상 등록, 선택)"
+    "youtubeUrl": "유튜브 링크 (영상 등록, 선택)",
+    "nav": {
+      "dashboard": "대시보드",
+      "registrations": "신청자",
+      "records": "기록",
+      "posts": "소식",
+      "gallery": "갤러리"
+    },
+    "dash": {
+      "pending": "입금 대기",
+      "totalRegs": "총 신청",
+      "pilots": "등록 선수",
+      "records": "등록 기록",
+      "posts": "게시물",
+      "galleryItems": "갤러리",
+      "go": "관리하기"
+    },
+    "filter": {
+      "all": "전체",
+      "pending": "입금 대기",
+      "confirmed": "확정",
+      "cancelled": "취소"
+    }
   },
   "gallery": {
     "label": "GALLERY",
