@@ -4,16 +4,7 @@ import { getLocale } from "next-intl/server";
 import { redirect } from "../../i18n/navigation";
 import { createClient, isSupabaseConfigured } from "../supabase/server";
 
-export const CHECKLIST_KEYS = [
-  "helmet",
-  "license",
-  "reserve",
-  "glider",
-  "insurance",
-  "radio",
-] as const;
-
-export const CLASSES = ["EN-B", "EN-C", "EN-D/CCC"] as const;
+import { CHECKLIST_KEYS, CLASSES } from "../register-constants";
 
 export type RegisterState = { error: string | null };
 

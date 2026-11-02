@@ -2,12 +2,8 @@
 
 import { useActionState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import {
-  CHECKLIST_KEYS,
-  CLASSES,
-  submitRegistration,
-  type RegisterState,
-} from "../../lib/actions/register";
+import { submitRegistration, type RegisterState } from "../../lib/actions/register";
+import { CHECKLIST_KEYS, CLASSES } from "../../lib/register-constants";
 
 const initial: RegisterState = { error: null };
 

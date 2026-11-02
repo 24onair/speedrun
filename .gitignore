@@ -41,3 +41,4 @@ yarn-error.log*
 next-env.d.ts
 .gstack/
 !.env.example
+supabase/.test-account.local
