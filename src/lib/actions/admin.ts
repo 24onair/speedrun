@@ -5,6 +5,7 @@ import { createClient } from "../supabase/server";
 import { CLASSES } from "../register-constants";
 import { parseTimeToMs } from "../time";
 import { translateFieldsToEn } from "../translate";
+import { extractYouTubeId, youTubeThumbnail } from "../youtube";
 
 // RLS(is_admin 정책)가 최종 방어선이고, 여기서는 UX를 위해 선검사만 한다
 async function requireAdmin() {
@@ -124,16 +125,27 @@ export async function deletePost(id: string) {
   revalidateAll();
 }
 
-export async function addGalleryItem(
-  imageUrl: string,
-  caption: string,
-  captionEn: string,
-): Promise<{ error: string | null }> {
+export async function addGalleryItem(input: {
+  imageUrl?: string;
+  videoUrl?: string;
+  caption: string;
+  captionEn: string;
+}): Promise<{ error: string | null }> {
   const supabase = await requireAdmin();
   if (!supabase) return { error: "forbidden" };
 
-  let en = captionEn.trim();
-  const ko = caption.trim();
+  let imageUrl = input.imageUrl ?? null;
+  let videoUrl: string | null = null;
+  if (input.videoUrl?.trim()) {
+    const id = extractYouTubeId(input.videoUrl);
+    if (!id) return { error: "invalid_youtube" };
+    videoUrl = `https://www.youtube.com/watch?v=${id}`;
+    imageUrl = imageUrl ?? youTubeThumbnail(id);
+  }
+  if (!imageUrl && !videoUrl) return { error: "missing_fields" };
+
+  let en = input.captionEn.trim();
+  const ko = input.caption.trim();
   if (ko && !en) {
     const translated = await translateFieldsToEn({ caption: ko });
     en = translated?.caption ?? "";
@@ -141,6 +153,7 @@ export async function addGalleryItem(
 
   const { error } = await supabase.from("gallery_items").insert({
     image_url: imageUrl,
+    video_url: videoUrl,
     caption: ko || null,
     caption_en: en || null,
   });

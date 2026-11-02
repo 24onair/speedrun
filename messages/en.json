@@ -339,7 +339,8 @@
     "errors": {
       "forbidden": "You are not an administrator.",
       "missing_fields": "Select pilot, event and class.",
-      "invalid_time": "Invalid time format. Example: 00:34:44"
+      "invalid_time": "Invalid time format. Example: 00:34:44",
+      "invalid_youtube": "Invalid YouTube link."
     },
     "postsTitle": "Write a post",
     "category": "Category",
@@ -356,13 +357,19 @@
     "uploaded": "Uploaded.",
     "recentGallery": "Recent gallery",
     "noneGallery": "No photos.",
-    "enAuto": "EN — auto-translated on publish if left empty"
+    "enAuto": "EN — auto-translated on publish if left empty",
+    "youtubeUrl": "YouTube link (adds a video, optional)"
   },
   "gallery": {
     "label": "GALLERY",
     "title": "Gallery",
     "lead": "Moments above the circuit — race photos and footage.",
-    "empty": "No photos yet."
+    "empty": "No photos yet.",
+    "open": "View larger",
+    "close": "Close",
+    "prev": "Previous",
+    "next": "Next",
+    "autoplay": "Auto slide"
   },
   "livetrack": {
     "label": "LIVE TRACK",

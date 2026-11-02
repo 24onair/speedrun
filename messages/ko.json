@@ -339,7 +339,8 @@
     "errors": {
       "forbidden": "관리자 권한이 없습니다.",
       "missing_fields": "선수·대회·클래스를 모두 선택해 주세요.",
-      "invalid_time": "기록 형식이 올바르지 않습니다. 예: 00:34:44"
+      "invalid_time": "기록 형식이 올바르지 않습니다. 예: 00:34:44",
+      "invalid_youtube": "유튜브 링크가 올바르지 않습니다."
     },
     "postsTitle": "소식 작성",
     "category": "분류",
@@ -356,13 +357,19 @@
     "uploaded": "업로드되었습니다.",
     "recentGallery": "최근 갤러리",
     "noneGallery": "사진이 없습니다.",
-    "enAuto": "EN — 비워두면 게시 시 자동 번역됩니다"
+    "enAuto": "EN — 비워두면 게시 시 자동 번역됩니다",
+    "youtubeUrl": "유튜브 링크 (영상 등록, 선택)"
   },
   "gallery": {
     "label": "GALLERY",
     "title": "갤러리",
     "lead": "서킷 위의 순간들 — 시합 사진과 영상 기록.",
-    "empty": "아직 등록된 사진이 없습니다."
+    "empty": "아직 등록된 사진이 없습니다.",
+    "open": "크게 보기",
+    "close": "닫기",
+    "prev": "이전",
+    "next": "다음",
+    "autoplay": "자동 슬라이드"
   },
   "livetrack": {
     "label": "LIVE TRACK",

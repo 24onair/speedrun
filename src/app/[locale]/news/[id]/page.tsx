@@ -1,5 +1,6 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "../../../../i18n/navigation";
+import PostBody from "../../../../components/PostBody";
 import { createClient, isSupabaseConfigured } from "../../../../lib/supabase/server";
 import { postBody, postTitle, type PostRow } from "../../../../lib/posts";
 
@@ -44,8 +45,8 @@ export default async function NewsDetailPage({
       <p className="hud mt-3 text-xs text-muted">
         {format.dateTime(new Date(post.created_at), { dateStyle: "long" })}
       </p>
-      <div className="mt-8 max-w-2xl whitespace-pre-line leading-relaxed text-fg/90">
-        {postBody(post, locale)}
+      <div className="mt-8">
+        <PostBody body={postBody(post, locale)} />
       </div>
       <Link href="/news" className="btn btn-ghost mt-10 text-sm">
         <span aria-hidden>←</span> {t("backToList")}
