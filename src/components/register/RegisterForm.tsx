@@ -85,7 +85,12 @@ export default function RegisterForm({
         </label>
         <label className={labelCls}>
           {t("license")}
-          <input name="license" required defaultValue={profile.license ?? ""} className={inputCls} />
+          <select name="license" required defaultValue={profile.license ?? ""} className={inputCls}>
+            <option value="" disabled />
+            {["PARA 1", "PARA 2", "PARA 3", "PARA 4"].map((lv) => (
+              <option key={lv} value={lv}>{lv}</option>
+            ))}
+          </select>
         </label>
       </fieldset>
 

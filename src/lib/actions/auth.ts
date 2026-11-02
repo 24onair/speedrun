@@ -6,30 +6,7 @@ import { createClient, isSupabaseConfigured } from "../supabase/server";
 
 export type AuthState = { error: string | null };
 
-export async function signUp(
-  _prev: AuthState,
-  formData: FormData,
-): Promise<AuthState> {
-  if (!isSupabaseConfigured()) return { error: "not_configured" };
-  const supabase = await createClient();
-  const locale = await getLocale();
-
-  const email = String(formData.get("email") ?? "").trim();
-  const password = String(formData.get("password") ?? "");
-  const name = String(formData.get("name") ?? "").trim();
-  const phone = String(formData.get("phone") ?? "").trim();
-  if (!email || !password || !name) return { error: "missing_fields" };
-
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { name, phone } },
-  });
-  if (error) return { error: error.message };
-
-  redirect({ href: "/login?signup=1", locale });
-  return { error: null };
-}
+// 가입은 클라이언트(SignupForm)에서 처리 — 즉시 세션 + 프로필 사진 업로드
 
 export async function signIn(
   _prev: AuthState,

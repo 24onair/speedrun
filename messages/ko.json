@@ -201,10 +201,13 @@
     "errors": {
       "not_configured": "서버 연결이 아직 설정되지 않았습니다. 관리자에게 문의하세요.",
       "missing_fields": "필수 항목을 모두 입력해 주세요.",
-      "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다."
+      "invalid_credentials": "이메일 또는 비밀번호가 올바르지 않습니다.",
+      "user_exists": "이미 가입된 이메일입니다."
     },
     "logout": "로그아웃",
-    "mypage": "마이페이지"
+    "mypage": "마이페이지",
+    "photoLabel": "프로필 사진 (선택)",
+    "choosePhoto": "사진 선택"
   },
   "register": {
     "title": "참가신청",

@@ -201,10 +201,13 @@
     "errors": {
       "not_configured": "Server connection is not configured yet. Contact the organizer.",
       "missing_fields": "Please fill in all required fields.",
-      "invalid_credentials": "Incorrect email or password."
+      "invalid_credentials": "Incorrect email or password.",
+      "user_exists": "This email is already registered."
     },
     "logout": "Sign out",
-    "mypage": "My page"
+    "mypage": "My page",
+    "photoLabel": "Profile photo (optional)",
+    "choosePhoto": "Choose photo"
   },
   "register": {
     "title": "Enter the Race",
