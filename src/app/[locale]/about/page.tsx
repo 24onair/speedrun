@@ -31,6 +31,17 @@ export default function AboutPage({
           <p className="leading-relaxed">{t("venue.p1")}</p>
           <p className="leading-relaxed">{t("venue.p2")}</p>
         </div>
+        <p className="hud mt-6 text-sm text-muted">{t("venue.address")}</p>
+        <div className="card mt-6 max-w-4xl overflow-hidden">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3246.1060383887275!2d128.23809737618947!3d35.551083272629654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x356f6b3c75402e79%3A0x6b86b99f2927dfdb!2z7ZWp7LKc7Yyo65-s6riA65287J2065Sp7YyM7YGs!5e0!3m2!1sko!2skr"
+            title={t("venue.title")}
+            className="h-80 w-full border-0 grayscale-[0.3]"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </div>
       </section>
 
       <section className="border-y border-line bg-bg-deep/60">

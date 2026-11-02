@@ -40,7 +40,9 @@ export default function Footer() {
                 {t("youtube")}
               </a>
             </li>
-            <li>speedrun.asia</li>
+            <li className="py-2">{t("phone")}</li>
+            <li className="py-2 leading-relaxed">{t("address")}</li>
+            <li className="py-2">speedrun.asia</li>
           </ul>
         </div>
       </div>

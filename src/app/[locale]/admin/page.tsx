@@ -1,7 +1,14 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { redirect } from "../../../i18n/navigation";
+import GalleryUploader from "../../../components/admin/GalleryUploader";
+import PostForm from "../../../components/admin/PostForm";
 import RecordForm from "../../../components/admin/RecordForm";
-import { deleteRecord, setRegistrationStatus } from "../../../lib/actions/admin";
+import {
+  deleteGalleryItem,
+  deletePost,
+  deleteRecord,
+  setRegistrationStatus,
+} from "../../../lib/actions/admin";
 import { createClient, isSupabaseConfigured } from "../../../lib/supabase/server";
 import { formatMs } from "../../../lib/time";
 
@@ -59,8 +66,14 @@ export default async function AdminPage({
     );
   }
 
-  const [{ data: regs }, { data: pilots }, { data: events }, { data: records }] =
-    await Promise.all([
+  const [
+    { data: regs },
+    { data: pilots },
+    { data: events },
+    { data: records },
+    { data: posts },
+    { data: gallery },
+  ] = await Promise.all([
       supabase
         .from("registrations")
         .select("id, class, status, depositor_name, created_at, profile:profiles(name), event:events(title)")
@@ -75,6 +88,16 @@ export default async function AdminPage({
         .order("created_at", { ascending: false })
         .limit(20)
         .returns<Rec[]>(),
+      supabase
+        .from("posts")
+        .select("id, category, title, created_at")
+        .order("created_at", { ascending: false })
+        .limit(10),
+      supabase
+        .from("gallery_items")
+        .select("id, image_url, caption")
+        .order("created_at", { ascending: false })
+        .limit(12),
     ]);
 
   const statusCls = {
@@ -176,6 +199,61 @@ export default async function AdminPage({
           </table>
         )}
       </div>
+
+      {/* 소식 작성 */}
+      <h2 className="display mt-14 text-2xl font-bold">{t("postsTitle")}</h2>
+      <div className="card mt-4 p-6">
+        <PostForm />
+      </div>
+
+      <h2 className="display mt-14 text-2xl font-bold">{t("recent")}</h2>
+      <div className="card mt-4 overflow-x-auto">
+        {!posts?.length ? (
+          <p className="p-6 text-sm text-muted">{t("none")}</p>
+        ) : (
+          <table className="w-full text-sm">
+            <tbody>
+              {posts.map((post) => (
+                <tr key={post.id} className="border-b border-line/50 last:border-b-0">
+                  <td className="hud px-4 py-3 text-xs text-accent">{post.category}</td>
+                  <td className="px-4 py-3 font-medium">{post.title}</td>
+                  <td className="hud px-4 py-3 text-xs text-muted">
+                    {format.dateTime(new Date(post.created_at), { dateStyle: "medium" })}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <form action={deletePost.bind(null, post.id)}>
+                      <button className="btn btn-ghost px-3 py-1.5 text-xs">{t("delete")}</button>
+                    </form>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      {/* 갤러리 업로드 */}
+      <h2 className="display mt-14 text-2xl font-bold">{t("galleryTitle")}</h2>
+      <div className="card mt-4 p-6">
+        <GalleryUploader />
+      </div>
+
+      <h2 className="display mt-14 text-2xl font-bold">{t("recentGallery")}</h2>
+      {!gallery?.length ? (
+        <p className="card mt-4 p-6 text-sm text-muted">{t("noneGallery")}</p>
+      ) : (
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
+          {gallery.map((item) => (
+            <div key={item.id} className="card overflow-hidden">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={item.image_url} alt={item.caption ?? ""} className="aspect-square w-full object-cover" />
+              <form action={deleteGalleryItem.bind(null, item.id)} className="p-2 text-right">
+                <button className="btn btn-ghost px-2 py-1 text-xs">{t("delete")}</button>
+              </form>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

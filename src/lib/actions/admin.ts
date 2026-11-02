@@ -76,3 +76,59 @@ export async function deleteRecord(id: string) {
   await supabase.from("records").delete().eq("id", id);
   revalidateAll();
 }
+
+export type PostState = { error: string | null; ok?: boolean };
+
+export async function addPost(
+  _prev: PostState,
+  formData: FormData,
+): Promise<PostState> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  const category = String(formData.get("category") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const body = String(formData.get("body") ?? "").trim();
+  const titleEn = String(formData.get("titleEn") ?? "").trim();
+  const bodyEn = String(formData.get("bodyEn") ?? "").trim();
+  if (!["notice", "news", "event"].includes(category) || !title || !body) {
+    return { error: "missing_fields" };
+  }
+
+  const { error } = await supabase.from("posts").insert({
+    category,
+    title,
+    body,
+    title_en: titleEn || null,
+    body_en: bodyEn || null,
+  });
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { error: null, ok: true };
+}
+
+export async function deletePost(id: string) {
+  const supabase = await requireAdmin();
+  if (!supabase) return;
+  await supabase.from("posts").delete().eq("id", id);
+  revalidateAll();
+}
+
+export async function deleteGalleryItem(id: string) {
+  const supabase = await requireAdmin();
+  if (!supabase) return;
+  // 스토리지 파일도 함께 정리
+  const { data: item } = await supabase
+    .from("gallery_items")
+    .select("image_url")
+    .eq("id", id)
+    .single();
+  await supabase.from("gallery_items").delete().eq("id", id);
+  const marker = "/object/public/gallery/";
+  const idx = item?.image_url?.indexOf(marker) ?? -1;
+  if (item && idx >= 0) {
+    const path = item.image_url.slice(idx + marker.length).split("?")[0];
+    await supabase.storage.from("gallery").remove([path]);
+  }
+  revalidateAll();
+}

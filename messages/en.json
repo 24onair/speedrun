@@ -109,6 +109,13 @@
         "title": "Most-laps ranking event",
         "date": "Sample post"
       }
+    },
+    "empty": "No posts yet.",
+    "backToList": "Back to list",
+    "categories": {
+      "notice": "Notice",
+      "news": "News",
+      "event": "Event"
     }
   },
   "ctaBand": {
@@ -122,7 +129,9 @@
     "menu": "Menu",
     "contact": "Contact",
     "youtube": "YouTube channel",
-    "copyright": "© SPEED RUN · Hapcheon Paragliding Park"
+    "copyright": "© SPEED RUN · Hapcheon Paragliding Park",
+    "phone": "010-4577-5449",
+    "address": "179 Uhoe-ro, Chogye-myeon, Hapcheon-gun, Gyeongsangnam-do"
   },
   "about": {
     "heroLabel": "ABOUT THE RACE",
@@ -132,7 +141,8 @@
       "label": "VENUE",
       "title": "The venue — Chogye Basin, Hapcheon",
       "p1": "Formed by a meteor impact roughly 200 million years ago, the Chogye Basin is Korea's only scientifically confirmed impact crater. The ridgeline around the basin and the fields inside it form a natural stadium.",
-      "p2": "Pilots launch from the Chogye site, clear the waypoints set across Chogye-myeon and Jeokjung-myeon, and return to the landing zone. Reading the basin's thermals and wind lines is what makes a fast time."
+      "p2": "Pilots launch from the Chogye site, clear the waypoints set across Chogye-myeon and Jeokjung-myeon, and return to the landing zone. Reading the basin's thermals and wind lines is what makes a fast time.",
+      "address": "179 Uhoe-ro, Chogye-myeon, Hapcheon-gun · Hapcheon Paragliding Park · +82 10-4577-5449"
     },
     "task": {
       "label": "TASK",
@@ -321,14 +331,53 @@
     "time": "Time (HH:MM:SS)",
     "flownOn": "Flight date",
     "note": "Note (optional)",
-    "addBtn": "Add record",
-    "added": "Record added — rankings update immediately.",
+    "addBtn": "Publish",
+    "added": "Published.",
     "delete": "Delete",
     "depositor": "Depositor",
     "errors": {
       "forbidden": "You are not an administrator.",
       "missing_fields": "Select pilot, event and class.",
       "invalid_time": "Invalid time format. Example: 00:34:44"
-    }
+    },
+    "postsTitle": "Write a post",
+    "category": "Category",
+    "titleKo": "Title (Korean)",
+    "bodyKo": "Body (Korean)",
+    "titleEn": "Title (English, optional)",
+    "bodyEn": "Body (English, optional)",
+    "recent": "Recent posts",
+    "none": "No posts.",
+    "galleryTitle": "Gallery upload",
+    "caption": "Caption (optional)",
+    "captionEn": "Caption (English, optional)",
+    "upload": "Upload photo",
+    "uploaded": "Uploaded.",
+    "recentGallery": "Recent gallery",
+    "noneGallery": "No photos."
+  },
+  "gallery": {
+    "label": "GALLERY",
+    "title": "Gallery",
+    "lead": "Moments above the circuit — race photos and footage.",
+    "empty": "No photos yet."
+  },
+  "livetrack": {
+    "label": "LIVE TRACK",
+    "title": "Live Track",
+    "lead": "Curious how your rivals are flying? Every flight is streamed live via GPS tracker.",
+    "flymaster": {
+      "tag": "LIVE",
+      "title": "Flymaster Live Track",
+      "desc": "Watch real-time positions and tracks of pilots on the circuit right now. If someone is beating your time — it's time to fly again.",
+      "cta": "Open live track"
+    },
+    "windguru": {
+      "tag": "WEATHER",
+      "title": "Windguru Forecast",
+      "desc": "Wind and weather forecast for the Hapcheon Para Park spot. Check conditions before you enter.",
+      "cta": "View forecast"
+    },
+    "note": "Links open in a new tab. Race-day live streams are announced in News."
   }
 }

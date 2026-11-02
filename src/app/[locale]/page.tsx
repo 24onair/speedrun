@@ -1,9 +1,10 @@
 import { useTranslations } from "next-intl";
-import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import { Link } from "../../i18n/navigation";
 import Avatar from "../../components/Avatar";
 import HeroVideo from "../../components/HeroVideo";
+import { postTitle, type PostRow } from "../../lib/posts";
 import { OVERALL_TOP } from "../../lib/sample-data";
 import { createClient, isSupabaseConfigured } from "../../lib/supabase/server";
 import { formatMs } from "../../lib/time";
@@ -288,9 +289,25 @@ function Season() {
   );
 }
 
-function News() {
-  const t = useTranslations("news");
-  const items = ["n1", "n2", "n3"] as const;
+async function News() {
+  const t = await getTranslations("news");
+  const locale = await getLocale();
+  const format = await getFormatter();
+
+  // 실데이터(posts) 우선, 게시물이 없으면 예시 카드로 폴백
+  let posts: PostRow[] = [];
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("posts")
+      .select("id, category, title, body, title_en, body_en, created_at")
+      .order("created_at", { ascending: false })
+      .limit(3)
+      .returns<PostRow[]>();
+    posts = data ?? [];
+  }
+  const isSample = posts.length === 0;
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-24">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -303,17 +320,29 @@ function News() {
         </Link>
       </div>
       <div className="mt-10 grid gap-4 md:grid-cols-3">
-        {items.map((key) => (
-          <Link key={key} href="/news" className="card group p-6 transition-colors hover:border-accent">
-            <span className="tag">{t(`items.${key}.tag`)}</span>
-            <p className="mt-4 font-bold leading-snug group-hover:text-accent">
-              {t(`items.${key}.title`)}
-            </p>
-            <p className="hud mt-3 text-xs text-muted">{t(`items.${key}.date`)}</p>
-          </Link>
-        ))}
+        {isSample
+          ? (["n1", "n2", "n3"] as const).map((key) => (
+              <Link key={key} href="/news" className="card group p-6 transition-colors hover:border-accent">
+                <span className="tag">{t(`items.${key}.tag`)}</span>
+                <p className="mt-4 font-bold leading-snug group-hover:text-accent">
+                  {t(`items.${key}.title`)}
+                </p>
+                <p className="hud mt-3 text-xs text-muted">{t(`items.${key}.date`)}</p>
+              </Link>
+            ))
+          : posts.map((post) => (
+              <Link key={post.id} href={`/news/${post.id}`} className="card group p-6 transition-colors hover:border-accent">
+                <span className="tag">{t(`categories.${post.category}`)}</span>
+                <p className="mt-4 font-bold leading-snug group-hover:text-accent">
+                  {postTitle(post, locale)}
+                </p>
+                <p className="hud mt-3 text-xs text-muted">
+                  {format.dateTime(new Date(post.created_at), { dateStyle: "medium" })}
+                </p>
+              </Link>
+            ))}
       </div>
-      <p className="hud mt-3 text-xs text-muted">{t("sampleNote")}</p>
+      {isSample && <p className="hud mt-3 text-xs text-muted">{t("sampleNote")}</p>}
     </section>
   );
 }
