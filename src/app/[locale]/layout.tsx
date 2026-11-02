@@ -60,12 +60,21 @@ export default async function LocaleLayout({
   const tNav = await getTranslations({ locale, namespace: "nav" });
 
   let authed = false;
+  let isAdmin = false;
   if (isSupabaseConfigured()) {
     const supabase = await createClient();
     const {
       data: { user },
     } = await supabase.auth.getUser();
     authed = Boolean(user);
+    if (user) {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("is_admin")
+        .eq("id", user.id)
+        .single();
+      isAdmin = Boolean(profile?.is_admin);
+    }
   }
 
   return (
@@ -80,7 +89,7 @@ export default async function LocaleLayout({
           >
             {tNav("skipToContent")}
           </a>
-          <Header authed={authed} />
+          <Header authed={authed} isAdmin={isAdmin} />
           <main id="main">{children}</main>
           <Footer />
         </NextIntlClientProvider>

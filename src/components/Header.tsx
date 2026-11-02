@@ -13,7 +13,13 @@ const NAV_ITEMS = [
   { key: "gallery", href: "/gallery" },
 ] as const;
 
-export default function Header({ authed = false }: { authed?: boolean }) {
+export default function Header({
+  authed = false,
+  isAdmin = false,
+}: {
+  authed?: boolean;
+  isAdmin?: boolean;
+}) {
   const t = useTranslations("nav");
   const tAuth = useTranslations("auth");
   const locale = useLocale();
@@ -63,6 +69,17 @@ export default function Header({ authed = false }: { authed?: boolean }) {
           >
             {otherLocale === "en" ? "EN" : "한국어"}
           </Link>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              className="hud hidden items-center gap-1.5 py-2 text-xs text-accent transition-colors hover:text-accent-hi sm:inline-flex"
+              aria-current={pathname.startsWith("/admin") ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+              {t("admin")}
+            </Link>
+          )}
           <Link
             href={authed ? "/mypage" : "/login"}
             className="hidden py-2 text-sm font-medium text-muted transition-colors hover:text-accent sm:block"
@@ -110,6 +127,16 @@ export default function Header({ authed = false }: { authed?: boolean }) {
             >
               {authed ? tAuth("mypage") : tAuth("goLogin")}
             </Link>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="hud flex items-center gap-2 border-t border-line/50 py-3 text-sm text-accent"
+                onClick={() => setOpen(false)}
+              >
+                <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+                {t("admin")}
+              </Link>
+            )}
           </div>
         </nav>
       )}
