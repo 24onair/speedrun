@@ -275,6 +275,57 @@
     },
     "empty": "—",
     "regRow": "{date} · {cls}",
-    "goRegister": "Go to registration"
+    "goRegister": "Go to registration",
+    "changePhoto": "Change photo"
+  },
+  "ranking": {
+    "label": "LEADERBOARD",
+    "title": "Rankings",
+    "lead": "Every flight is GPS-logged and ranked by best time. Fastest at season's end is the season champion.",
+    "overall": "Overall",
+    "byClass": "By class",
+    "rank": "Rank",
+    "pilot": "Pilot",
+    "classCol": "CLASS",
+    "time": "Time",
+    "org": "Club",
+    "date": "Flown",
+    "empty": "No records yet — be the first on the board.",
+    "viewProfile": "View profile"
+  },
+  "pilots": {
+    "label": "PILOT PROFILE",
+    "bestTitle": "Best time",
+    "recordsTitle": "Season records",
+    "noRecords": "No records yet.",
+    "notFound": "Pilot not found.",
+    "backToRanking": "Back to rankings"
+  },
+  "admin": {
+    "title": "Admin",
+    "forbidden": "This page is for administrators only.",
+    "regsTitle": "Entries",
+    "noRegs": "No entries.",
+    "confirm": "Confirm deposit",
+    "cancel": "Cancel",
+    "restore": "Set pending",
+    "recordsTitle": "Add record",
+    "recentRecords": "Recent records",
+    "noRecords": "No records entered.",
+    "pilot": "Pilot",
+    "event": "Event",
+    "classLabel": "Class",
+    "time": "Time (HH:MM:SS)",
+    "flownOn": "Flight date",
+    "note": "Note (optional)",
+    "addBtn": "Add record",
+    "added": "Record added — rankings update immediately.",
+    "delete": "Delete",
+    "depositor": "Depositor",
+    "errors": {
+      "forbidden": "You are not an administrator.",
+      "missing_fields": "Select pilot, event and class.",
+      "invalid_time": "Invalid time format. Example: 00:34:44"
+    }
   }
 }

@@ -1,5 +1,6 @@
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link, redirect } from "../../../i18n/navigation";
+import AvatarUploader from "../../../components/auth/AvatarUploader";
 import { signOut } from "../../../lib/actions/auth";
 import { createClient, isSupabaseConfigured } from "../../../lib/supabase/server";
 
@@ -38,7 +39,7 @@ export default async function MyPage({
   const [{ data: profile }, { data: regs }] = await Promise.all([
     supabase
       .from("profiles")
-      .select("name, phone, org, glider, license, class")
+      .select("name, phone, org, glider, license, class, avatar_url")
       .eq("id", user.id)
       .single(),
     supabase
@@ -83,7 +84,14 @@ export default async function MyPage({
         {/* 프로필 */}
         <div className="card p-6">
           <p className="display text-xl font-bold">{t("profileTitle")}</p>
-          <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-sm">
+          <div className="mt-4">
+            <AvatarUploader
+              userId={user.id}
+              name={profile?.name ?? ""}
+              avatarUrl={profile?.avatar_url ?? null}
+            />
+          </div>
+          <dl className="mt-5 grid grid-cols-[auto_1fr] gap-x-6 gap-y-2.5 text-sm">
             {fields.map(([key, value]) => (
               <div key={key} className="contents">
                 <dt className="hud text-muted">{t(`fields.${key}`)}</dt>

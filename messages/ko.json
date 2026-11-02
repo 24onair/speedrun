@@ -275,6 +275,57 @@
     },
     "empty": "—",
     "regRow": "{date} · {cls}",
-    "goRegister": "참가신청 하러 가기"
+    "goRegister": "참가신청 하러 가기",
+    "changePhoto": "사진 변경"
+  },
+  "ranking": {
+    "label": "LEADERBOARD",
+    "title": "순위 / 기록",
+    "lead": "모든 비행은 GPS로 기록되고, 베스트 기록으로 순위가 집계됩니다. 시즌이 끝날 때 가장 빠른 사람이 시즌 챔피언입니다.",
+    "overall": "종합 순위",
+    "byClass": "클래스별 순위",
+    "rank": "순위",
+    "pilot": "파일럿",
+    "classCol": "CLASS",
+    "time": "기록",
+    "org": "소속",
+    "date": "비행일",
+    "empty": "아직 집계된 기록이 없습니다. 첫 기록의 주인공이 되어보세요.",
+    "viewProfile": "프로필 보기"
+  },
+  "pilots": {
+    "label": "PILOT PROFILE",
+    "bestTitle": "베스트 기록",
+    "recordsTitle": "시즌 기록",
+    "noRecords": "아직 기록이 없습니다.",
+    "notFound": "선수를 찾을 수 없습니다.",
+    "backToRanking": "순위로 돌아가기"
+  },
+  "admin": {
+    "title": "관리자",
+    "forbidden": "관리자만 접근할 수 있는 페이지입니다.",
+    "regsTitle": "참가신청 관리",
+    "noRegs": "신청 내역이 없습니다.",
+    "confirm": "입금확인",
+    "cancel": "취소",
+    "restore": "대기로",
+    "recordsTitle": "기록 입력",
+    "recentRecords": "최근 입력한 기록",
+    "noRecords": "입력된 기록이 없습니다.",
+    "pilot": "선수",
+    "event": "대회",
+    "classLabel": "클래스",
+    "time": "기록 (HH:MM:SS)",
+    "flownOn": "비행일",
+    "note": "메모 (선택)",
+    "addBtn": "기록 추가",
+    "added": "기록이 추가되었습니다. 순위에 바로 반영됩니다.",
+    "delete": "삭제",
+    "depositor": "입금자명",
+    "errors": {
+      "forbidden": "관리자 권한이 없습니다.",
+      "missing_fields": "선수·대회·클래스를 모두 선택해 주세요.",
+      "invalid_time": "기록 형식이 올바르지 않습니다. 예: 00:34:44"
+    }
   }
 }

@@ -1,9 +1,12 @@
-import { useLocale, useTranslations } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { useTranslations } from "next-intl";
+import { getLocale, getTranslations, setRequestLocale } from "next-intl/server";
 import { use } from "react";
 import { Link } from "../../i18n/navigation";
+import Avatar from "../../components/Avatar";
 import HeroVideo from "../../components/HeroVideo";
 import { OVERALL_TOP } from "../../lib/sample-data";
+import { createClient, isSupabaseConfigured } from "../../lib/supabase/server";
+import { formatMs } from "../../lib/time";
 
 export default function Home({
   params,
@@ -134,16 +137,63 @@ function Classes() {
   );
 }
 
-function Leaderboard() {
-  const t = useTranslations("leaderboard");
-  const locale = useLocale();
-  const [p1, p2, p3, ...rest] = OVERALL_TOP;
+type HomeLeader = {
+  pilotId: string | null;
+  rank: number;
+  name: string;
+  nameEn: string;
+  cls: string;
+  time: string;
+  avatarUrl: string | null;
+};
+
+async function Leaderboard() {
+  const t = await getTranslations("leaderboard");
+  const locale = await getLocale();
+
+  // 실데이터(leaderboard 뷰) 우선, 기록이 없으면 예시 데이터로 폴백
+  let rows: HomeLeader[] = [];
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const { data } = await supabase
+      .from("leaderboard")
+      .select("pilot_id, name, name_en, avatar_url, class, time_ms")
+      .order("time_ms", { ascending: true })
+      .limit(6);
+    rows = (data ?? []).map((r, i) => ({
+      pilotId: r.pilot_id,
+      rank: i + 1,
+      name: r.name,
+      nameEn: r.name_en ?? r.name,
+      cls: r.class,
+      time: formatMs(r.time_ms),
+      avatarUrl: r.avatar_url,
+    }));
+  }
+  const isSample = rows.length === 0;
+  if (isSample) {
+    rows = OVERALL_TOP.map((r) => ({
+      pilotId: null,
+      rank: r.rank,
+      name: r.name,
+      nameEn: r.nameEn,
+      cls: r.cls,
+      time: r.time,
+      avatarUrl: null,
+    }));
+  }
+
+  const [p1, p2, p3] = rows;
+  const rest = rows.slice(3);
   // DOM은 P1 먼저(모바일 1열·스크린리더 순서), md 이상에서만 P2-P1-P3 포디움 배치
   const podium = [
     { entry: p1, cls: "md:order-2 border-t-2 border-t-accent" },
     { entry: p2, cls: "md:order-1 md:mt-6" },
     { entry: p3, cls: "md:order-3 md:mt-6" },
-  ];
+  ].filter((p) => p.entry);
+
+  const pilotName = (e: HomeLeader) => (locale === "en" ? e.nameEn : e.name);
+
   return (
     <section className="mx-auto max-w-6xl px-4 py-24">
       <div className="flex flex-wrap items-end justify-between gap-4">
@@ -158,50 +208,55 @@ function Leaderboard() {
       </div>
 
       <div className="mt-12 grid gap-3 md:grid-cols-3">
-        {podium.map(({ entry, cls }) => (
-          <div key={entry.rank} className={`card flex flex-col items-center p-6 text-center ${cls}`}>
-            <p className={`display text-2xl font-bold ${entry.rank === 1 ? "text-accent" : "text-muted"}`}>
-              P{entry.rank}
-            </p>
-            <div
-              className="mt-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-accent to-sky text-xl font-black text-bg-deep"
-              aria-hidden
-            >
-              {(locale === "en" ? entry.nameEn : entry.name).charAt(0)}
-            </div>
-            <p className="mt-4 font-bold">{locale === "en" ? entry.nameEn : entry.name}</p>
-            <p className="hud mt-1 text-sm text-muted">{entry.cls}</p>
-            <p className="hud mt-3 text-xl text-fg">{entry.time}</p>
-          </div>
-        ))}
+        {podium.map(({ entry, cls }) => {
+          const body = (
+            <>
+              <p className={`display text-2xl font-bold ${entry.rank === 1 ? "text-accent" : "text-muted"}`}>
+                P{entry.rank}
+              </p>
+              <Avatar name={pilotName(entry)} src={entry.avatarUrl} size={64} className="mt-4" />
+              <p className="mt-4 font-bold">{pilotName(entry)}</p>
+              <p className="hud mt-1 text-sm text-muted">{entry.cls}</p>
+              <p className="hud mt-3 text-xl text-fg">{entry.time}</p>
+            </>
+          );
+          const cardCls = `card flex flex-col items-center p-6 text-center ${cls}`;
+          return entry.pilotId ? (
+            <Link key={entry.rank} href={`/pilots/${entry.pilotId}`} className={`${cardCls} transition-colors hover:border-accent`}>
+              {body}
+            </Link>
+          ) : (
+            <div key={entry.rank} className={cardCls}>{body}</div>
+          );
+        })}
       </div>
 
-      <div className="card mt-4 overflow-x-auto">
-        <table className="w-full text-sm">
-          <caption className="sr-only">{t("title")}</caption>
-          <thead>
-            <tr className="hud border-b border-line bg-panel-2/60 text-left text-xs text-muted">
-              <th scope="col" className="px-5 py-3 font-medium">{t("rank")}</th>
-              <th scope="col" className="px-5 py-3 font-medium">{t("pilot")}</th>
-              <th scope="col" className="hidden px-5 py-3 font-medium sm:table-cell">CLASS</th>
-              <th scope="col" className="px-5 py-3 text-right font-medium">{t("time")}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rest.map((r) => (
-              <tr key={r.rank} className="border-b border-line/50 last:border-b-0">
-                <td className="hud px-5 py-3 text-muted">P{r.rank}</td>
-                <td className="px-5 py-3 font-medium">
-                  {locale === "en" ? r.nameEn : r.name}
-                </td>
-                <td className="hud hidden px-5 py-3 text-muted sm:table-cell">{r.cls}</td>
-                <td className="hud px-5 py-3 text-right">{r.time}</td>
+      {rest.length > 0 && (
+        <div className="card mt-4 overflow-x-auto">
+          <table className="w-full text-sm">
+            <caption className="sr-only">{t("title")}</caption>
+            <thead>
+              <tr className="hud border-b border-line bg-panel-2/60 text-left text-xs text-muted">
+                <th scope="col" className="px-5 py-3 font-medium">{t("rank")}</th>
+                <th scope="col" className="px-5 py-3 font-medium">{t("pilot")}</th>
+                <th scope="col" className="hidden px-5 py-3 font-medium sm:table-cell">CLASS</th>
+                <th scope="col" className="px-5 py-3 text-right font-medium">{t("time")}</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p className="hud mt-3 text-xs text-muted">{t("sampleNote")}</p>
+            </thead>
+            <tbody>
+              {rest.map((r) => (
+                <tr key={r.rank} className="border-b border-line/50 last:border-b-0">
+                  <td className="hud px-5 py-3 text-muted">P{r.rank}</td>
+                  <td className="px-5 py-3 font-medium">{pilotName(r)}</td>
+                  <td className="hud hidden px-5 py-3 text-muted sm:table-cell">{r.cls}</td>
+                  <td className="hud px-5 py-3 text-right">{r.time}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {isSample && <p className="hud mt-3 text-xs text-muted">{t("sampleNote")}</p>}
     </section>
   );
 }
