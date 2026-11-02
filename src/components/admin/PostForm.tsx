@@ -35,7 +35,7 @@ export default function PostForm() {
         <textarea name="body" required rows={5} className={inputCls} />
       </label>
       <details className="text-sm text-muted">
-        <summary className="cursor-pointer py-1">EN</summary>
+        <summary className="cursor-pointer py-1">{t("enAuto")}</summary>
         <div className="mt-3 flex flex-col gap-4">
           <label className={labelCls}>
             {t("titleEn")}

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "../supabase/server";
 import { CLASSES } from "../register-constants";
 import { parseTimeToMs } from "../time";
+import { translateFieldsToEn } from "../translate";
 
 // RLS(is_admin 정책)가 최종 방어선이고, 여기서는 UX를 위해 선검사만 한다
 async function requireAdmin() {
@@ -89,10 +90,19 @@ export async function addPost(
   const category = String(formData.get("category") ?? "");
   const title = String(formData.get("title") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
-  const titleEn = String(formData.get("titleEn") ?? "").trim();
-  const bodyEn = String(formData.get("bodyEn") ?? "").trim();
+  let titleEn = String(formData.get("titleEn") ?? "").trim();
+  let bodyEn = String(formData.get("bodyEn") ?? "").trim();
   if (!["notice", "news", "event"].includes(category) || !title || !body) {
     return { error: "missing_fields" };
+  }
+
+  // 영문을 비워두면 자동 번역 (실패 시 비워둔 채 저장)
+  if (!titleEn && !bodyEn) {
+    const translated = await translateFieldsToEn({ title, body });
+    if (translated) {
+      titleEn = translated.title ?? "";
+      bodyEn = translated.body ?? "";
+    }
   }
 
   const { error } = await supabase.from("posts").insert({
@@ -112,6 +122,31 @@ export async function deletePost(id: string) {
   if (!supabase) return;
   await supabase.from("posts").delete().eq("id", id);
   revalidateAll();
+}
+
+export async function addGalleryItem(
+  imageUrl: string,
+  caption: string,
+  captionEn: string,
+): Promise<{ error: string | null }> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  let en = captionEn.trim();
+  const ko = caption.trim();
+  if (ko && !en) {
+    const translated = await translateFieldsToEn({ caption: ko });
+    en = translated?.caption ?? "";
+  }
+
+  const { error } = await supabase.from("gallery_items").insert({
+    image_url: imageUrl,
+    caption: ko || null,
+    caption_en: en || null,
+  });
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { error: null };
 }
 
 export async function deleteGalleryItem(id: string) {

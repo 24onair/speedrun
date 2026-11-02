@@ -355,7 +355,8 @@
     "upload": "사진 업로드",
     "uploaded": "업로드되었습니다.",
     "recentGallery": "최근 갤러리",
-    "noneGallery": "사진이 없습니다."
+    "noneGallery": "사진이 없습니다.",
+    "enAuto": "EN — 비워두면 게시 시 자동 번역됩니다"
   },
   "gallery": {
     "label": "GALLERY",

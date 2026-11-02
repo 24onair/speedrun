@@ -355,7 +355,8 @@
     "upload": "Upload photo",
     "uploaded": "Uploaded.",
     "recentGallery": "Recent gallery",
-    "noneGallery": "No photos."
+    "noneGallery": "No photos.",
+    "enAuto": "EN — auto-translated on publish if left empty"
   },
   "gallery": {
     "label": "GALLERY",

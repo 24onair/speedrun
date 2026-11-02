@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { addGalleryItem } from "../../lib/actions/admin";
 import { createClient } from "../../lib/supabase/client";
 
 /* 관리자 갤러리 업로드 — gallery 버킷(관리자만 쓰기) */
@@ -30,12 +31,13 @@ export default function GalleryUploader() {
         .upload(path, file, { cacheControl: "3600" });
       if (upErr) throw upErr;
       const { data: pub } = supabase.storage.from("gallery").getPublicUrl(path);
-      const { error: dbErr } = await supabase.from("gallery_items").insert({
-        image_url: pub.publicUrl,
-        caption: caption.trim() || null,
-        caption_en: captionEn.trim() || null,
-      });
-      if (dbErr) throw dbErr;
+      // DB 저장은 서버 액션 — 영문 캡션을 비워두면 자동 번역된다
+      const { error: dbErr } = await addGalleryItem(
+        pub.publicUrl,
+        caption,
+        captionEn,
+      );
+      if (dbErr) throw new Error(dbErr);
       setMsg({ ok: true, text: t("uploaded") });
       setCaption("");
       setCaptionEn("");
