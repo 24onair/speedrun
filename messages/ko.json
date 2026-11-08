@@ -385,7 +385,15 @@
     "save": "저장",
     "editCancel": "취소",
     "takenOn": "촬영일",
-    "saved": "저장되었습니다."
+    "saved": "저장되었습니다.",
+    "albumCompose": "앨범 올리기",
+    "albumTitle": "앨범 제목",
+    "addPhotos": "사진 추가",
+    "addYoutube": "유튜브 추가",
+    "itemCaption": "설명 (선택, 비우면 번역 생략)",
+    "publishAlbum": "앨범 게시",
+    "albumPublished": "앨범이 게시되었습니다.",
+    "albums": "등록된 앨범"
   },
   "gallery": {
     "label": "GALLERY",

@@ -165,6 +165,143 @@ export async function deletePost(id: string) {
   revalidateAll();
 }
 
+// ── 갤러리 앨범 ────────────────────────────────────────────────
+
+export type AlbumItemInput = {
+  imageUrl?: string;
+  videoUrl?: string;
+  caption: string;
+};
+
+export async function createGalleryAlbum(input: {
+  title: string;
+  items: AlbumItemInput[];
+}): Promise<{ error: string | null }> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  const title = input.title.trim();
+  if (!title || !input.items.length || input.items.length > 60) {
+    return { error: "missing_fields" };
+  }
+
+  // 항목 정리 (유튜브 정규화 + 썸네일)
+  const items: { image_url: string | null; video_url: string | null; caption: string }[] = [];
+  for (const item of input.items) {
+    if (item.videoUrl?.trim()) {
+      const ytId = extractYouTubeId(item.videoUrl);
+      if (!ytId) return { error: "invalid_youtube" };
+      items.push({
+        image_url: youTubeThumbnail(ytId),
+        video_url: `https://www.youtube.com/watch?v=${ytId}`,
+        caption: item.caption.trim(),
+      });
+    } else if (item.imageUrl) {
+      items.push({ image_url: item.imageUrl, video_url: null, caption: item.caption.trim() });
+    }
+  }
+  if (!items.length) return { error: "missing_fields" };
+
+  // 제목 + 설명 전부 한 번의 호출로 번역
+  const fields: Record<string, string> = { title };
+  items.forEach((item, i) => {
+    if (item.caption) fields[`c${i}`] = item.caption;
+  });
+  const translated = await translateFieldsToEn(fields);
+
+  const { data: album, error: albumErr } = await supabase
+    .from("gallery_albums")
+    .insert({ title, title_en: translated?.title ?? null })
+    .select("id")
+    .single();
+  if (albumErr || !album) return { error: albumErr?.message ?? "album_failed" };
+
+  const { error: itemsErr } = await supabase.from("gallery_items").insert(
+    items.map((item, i) => ({
+      album_id: album.id,
+      sort: i,
+      image_url: item.image_url,
+      video_url: item.video_url,
+      caption: item.caption || null,
+      caption_en: translated?.[`c${i}`] ?? null,
+    })),
+  );
+  if (itemsErr) return { error: itemsErr.message };
+
+  revalidateAll();
+  return { error: null };
+}
+
+export async function updateGalleryAlbum(input: {
+  id: string;
+  title: string;
+  titleEn: string;
+  items: { id: string; caption: string; captionEn: string }[];
+  removeIds: string[];
+}): Promise<{ error: string | null }> {
+  const supabase = await requireAdmin();
+  if (!supabase) return { error: "forbidden" };
+
+  const title = input.title.trim();
+  if (!input.id || !title) return { error: "missing_fields" };
+
+  // 비어 있는 영문만 자동 번역 (직접 쓴 번역은 보존)
+  const fields: Record<string, string> = {};
+  if (!input.titleEn.trim()) fields.title = title;
+  input.items.forEach((item) => {
+    if (item.caption.trim() && !item.captionEn.trim()) fields[`c_${item.id}`] = item.caption.trim();
+  });
+  const translated =
+    Object.keys(fields).length > 0 ? await translateFieldsToEn(fields) : null;
+
+  const { error: albumErr } = await supabase
+    .from("gallery_albums")
+    .update({
+      title,
+      title_en: input.titleEn.trim() || translated?.title || null,
+    })
+    .eq("id", input.id);
+  if (albumErr) return { error: albumErr.message };
+
+  for (const item of input.items) {
+    const { error } = await supabase
+      .from("gallery_items")
+      .update({
+        caption: item.caption.trim() || null,
+        caption_en: item.captionEn.trim() || translated?.[`c_${item.id}`] || null,
+      })
+      .eq("id", item.id);
+    if (error) return { error: error.message };
+  }
+
+  for (const id of input.removeIds) {
+    await deleteGalleryItem(id);
+  }
+
+  revalidateAll();
+  return { error: null };
+}
+
+export async function deleteGalleryAlbum(id: string) {
+  const supabase = await requireAdmin();
+  if (!supabase) return;
+  // 스토리지 파일 정리 후 앨범 삭제 (items는 cascade)
+  const { data: items } = await supabase
+    .from("gallery_items")
+    .select("image_url")
+    .eq("album_id", id);
+  const marker = "/object/public/gallery/";
+  const paths = (items ?? [])
+    .map((item) => {
+      const idx = item.image_url?.indexOf(marker) ?? -1;
+      return idx >= 0 ? item.image_url!.slice(idx + marker.length).split("?")[0] : null;
+    })
+    .filter((p): p is string => Boolean(p));
+  if (paths.length) await supabase.storage.from("gallery").remove(paths);
+  await supabase.from("gallery_albums").delete().eq("id", id);
+  revalidateAll();
+}
+
 export async function addGalleryItem(input: {
   imageUrl?: string;
   videoUrl?: string;

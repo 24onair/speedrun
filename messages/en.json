@@ -385,7 +385,15 @@
     "save": "Save",
     "editCancel": "Cancel",
     "takenOn": "Date taken",
-    "saved": "Saved."
+    "saved": "Saved.",
+    "albumCompose": "New album",
+    "albumTitle": "Album title",
+    "addPhotos": "Add photos",
+    "addYoutube": "Add YouTube",
+    "itemCaption": "Caption (optional)",
+    "publishAlbum": "Publish album",
+    "albumPublished": "Album published.",
+    "albums": "Albums"
   },
   "gallery": {
     "label": "GALLERY",
