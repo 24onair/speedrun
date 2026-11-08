@@ -42,7 +42,7 @@ export default async function AdminRegistrationsPage({
   const { data: regs } = await query.returns<Reg[]>();
 
   const statusCls = {
-    pending: "text-accent-hi",
+    pending: "text-warn",
     confirmed: "text-good",
     cancelled: "text-muted",
   } as const;

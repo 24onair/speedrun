@@ -60,7 +60,7 @@ export default async function MyPage({
   ] as const;
 
   const statusCls: Record<RegRow["status"], string> = {
-    pending: "text-accent-hi",
+    pending: "text-warn",
     confirmed: "text-good",
     cancelled: "text-muted",
   };

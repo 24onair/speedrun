@@ -12,12 +12,13 @@
   --line: #22304a;
   --fg: #eef3fa;
   --muted: #8da0bb;
-  --accent: #ff7a1a;
-  --accent-hi: #ffb36b;
-  --accent-soft: rgba(255, 122, 26, 0.12);
-  --accent-ink: #10131a; /* 오렌지 배경 위 텍스트 */
+  --accent: #ccff00;
+  --accent-hi: #e2ff5c;
+  --accent-soft: rgba(204, 255, 0, 0.1);
+  --accent-ink: #10131a; /* 라임 배경 위 텍스트 */
   --sky: #5fb2ff;
   --good: #46d08c;
+  --warn: #ffb020; /* 입금 대기 등 경고 상태 — 포인트(라임)·확정(초록)과 구분 */
   color-scheme: dark;
 }
 
@@ -33,6 +34,7 @@
   --color-accent-hi: var(--accent-hi);
   --color-sky: var(--sky);
   --color-good: var(--good);
+  --color-warn: var(--warn);
 }
 
 /* next/font injects --font-barlow / --font-noto / --font-plex-mono on <body>,
