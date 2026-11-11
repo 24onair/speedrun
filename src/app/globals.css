@@ -12,9 +12,9 @@
   --line: #22304a;
   --fg: #eef3fa;
   --muted: #8da0bb;
-  --accent: #ccff00;
-  --accent-hi: #e2ff5c;
-  --accent-soft: rgba(204, 255, 0, 0.1);
+  --accent: #e8ff80;
+  --accent-hi: #f2ffa6;
+  --accent-soft: rgba(232, 255, 128, 0.12);
   --accent-ink: #10131a; /* 라임 배경 위 텍스트 */
   --sky: #5fb2ff;
   --good: #46d08c;
